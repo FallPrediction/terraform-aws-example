@@ -83,7 +83,7 @@ resource "aws_instance" "nat" {
   }
 }
 
-resource "aws_instance" "test_server" {
+resource "aws_instance" "db" {
   ami                    = data.aws_ami.ubuntu_22_04.id
   instance_type          = "t3a.nano"
   availability_zone      = data.aws_availability_zones.available.names[0]
@@ -92,7 +92,7 @@ resource "aws_instance" "test_server" {
   key_name               = aws_key_pair.key_pair.key_name
 
   tags = {
-    Name = "example_test_server"
+    Name = "example_db"
   }
 }
 
