@@ -48,6 +48,7 @@ resource "aws_instance" "app_server" {
   vpc_security_group_ids = [aws_security_group.public.id]
   subnet_id              = aws_subnet.public.id
   key_name               = aws_key_pair.key_pair.key_name
+  iam_instance_profile   = aws_iam_instance_profile.deploy.name
 
   tags = {
     Name = "example_app_server"
