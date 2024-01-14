@@ -2,27 +2,13 @@ data "aws_availability_zones" "available" {
   state = "available"
 }
 
-data "aws_ami" "ubuntu_22_04" {
+data "aws_ami" "ubuntu" {
   most_recent = true
-
-  filter {
-    name   = "state"
-    values = ["available"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  filter {
-    name   = "architecture"
-    values = ["x86_64"]
-  }
+  owners      = ["amazon"]
 
   filter {
     name   = "name"
-    values = ["ubuntu-22-04*"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64*"]
   }
 }
 
@@ -56,7 +42,7 @@ resource "aws_key_pair" "key_pair" {
 }
 
 resource "aws_instance" "app_server" {
-  ami                    = data.aws_ami.ubuntu_22_04.id
+  ami                    = data.aws_ami.ubuntu.id
   instance_type          = "t3a.nano"
   availability_zone      = data.aws_availability_zones.available.names[0]
   vpc_security_group_ids = [aws_security_group.public.id]
@@ -84,7 +70,7 @@ resource "aws_instance" "nat" {
 }
 
 resource "aws_instance" "db" {
-  ami                    = data.aws_ami.ubuntu_22_04.id
+  ami                    = data.aws_ami.ubuntu.id
   instance_type          = "t3a.nano"
   availability_zone      = data.aws_availability_zones.available.names[0]
   vpc_security_group_ids = [aws_security_group.private.id]
