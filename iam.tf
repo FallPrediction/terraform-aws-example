@@ -27,8 +27,8 @@ data "aws_iam_policy_document" "deploy" {
 }
 
 # Permissions policies
-data "aws_iam_policy" "s3_readonly" {
-  name = "AmazonS3ReadOnlyAccess"
+data "aws_iam_policy" "s3" {
+  name = "AmazonS3FullAccess"
 }
 
 data "aws_iam_policy" "codedeploy" {
@@ -44,9 +44,9 @@ resource "aws_iam_role" "deploy" {
   assume_role_policy = data.aws_iam_policy_document.deploy.json
 }
 
-resource "aws_iam_role_policy_attachment" "s3_readonly" {
+resource "aws_iam_role_policy_attachment" "s3" {
   role       = aws_iam_role.deploy.name
-  policy_arn = data.aws_iam_policy.s3_readonly.arn
+  policy_arn = data.aws_iam_policy.s3.arn
 }
 
 resource "aws_iam_role_policy_attachment" "codedeploy" {
